@@ -26,6 +26,15 @@ class TestBaseModel(unittest.TestCase):
         self.model1 = BaseModel()
         self.model2 = BaseModel()
 
+    def test_init(self):
+        """Test the initialization, when no argument is passed
+        and when a dictionary is passed"""
+        dictionary = self.model1.to_dict()
+        new_model = BaseModel(**dictionary)
+        self.assertIsInstance(new_model, BaseModel)
+        self.assertIsInstance(new_model.created_at, datetime)
+        self.assertEqual(str(self.model1), str(new_model))
+
     def test_attribute_id(self):
         """Uniqueness of an object"""
         self.assertIsInstance(self.model1, BaseModel)
@@ -65,10 +74,10 @@ class TestBaseModel(unittest.TestCase):
         mock_uuid.return_value = "Mock_ID"
         model4 = BaseModel()
         dictionary = model4.to_dict()
-        self.assertEqual(dictionary, {'__class__': 'BaseModel',
-                                      'updated_at': model4.updated_at,
-                                      'id': 'Mock_ID',
-                                      'created_at': model4.created_at})
+        self.assertEqual(dictionary, {'__class__': 'BaseModel', 'updated_at':
+                                      datetime.isoformat(model4.updated_at),
+                                      'id': 'Mock_ID', 'created_at':
+                                      datetime.isoformat(model4.created_at)})
 
     def test_save(self):
         """Test if save updates the updated_at attribute"""
