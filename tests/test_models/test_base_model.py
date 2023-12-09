@@ -17,7 +17,7 @@ class TestBaseModel(unittest.TestCase):
         """Class has documentation"""
         self.assertGreater(len(BaseModel.__doc__), 1)
 
-    def method_class_documentation(self):
+    def test_method_documentation(self):
         """Methods have documentation"""
         self.assertGreater(len(BaseModel.__init__.__doc__), 1)
 
