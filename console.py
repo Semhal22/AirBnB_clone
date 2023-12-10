@@ -18,6 +18,12 @@ class HBNBCommand(cmd.Cmd):
     classes = {'BaseModel': BaseModel, 'User': User, 'Amenity': Amenity,
                'City': City, 'Place': Place, 'Review': Review, 'State': State}
 
+    def precmd(self, line):
+        """Called before any do_ methods"""
+        if '.all()' in line:
+            return 'all ' + line.split('.')[0]
+        return line
+
     def do_create(self, args):
         """Creates a new instance"""
         if not args:
