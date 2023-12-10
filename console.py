@@ -3,6 +3,11 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 from models import storage
 import re
 
@@ -10,7 +15,8 @@ import re
 class HBNBCommand(cmd.Cmd):
     """Command interpreter"""
     prompt = '(hbnb) '
-    classes = {'BaseModel': BaseModel, 'User': User}
+    classes = {'BaseModel': BaseModel, 'User': User, 'Amenity': Amenity,
+               'City': City, 'Place': Place, 'Review': Review, 'State': State}
 
     def do_create(self, args):
         """Creates a new instance"""
@@ -76,13 +82,22 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """Prints the string representation of all instances"""
         all = []
+        retrieved_instances = storage.all()
         if arg:
             class_name = arg.split(" ")[0]
             if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
+            else:
+                for key, obj in retrieved_instances.items():
+                    name, id = key.split('.')
+                    if class_name == name:
+                        all.append(str(obj))
 
-        retrieved_instances = storage.all()
+                if all:
+                    print(all)
+                return
+
         for value in retrieved_instances.values():
             all.append(str(value))
         if all:

@@ -45,3 +45,23 @@ class FileStorage:
                     from models.user import User
                     model = User(**obj_dict)
                     self.new(model)
+                elif class_name == "Amenity":
+                    from models.amenity import Amenity
+                    model = Amenity(**obj_dict)
+                    self.new(model)
+                elif class_name == "City":
+                    from models.city import City
+                    model = City(**obj_dict)
+                    self.new(model)
+                elif class_name == "Place":
+                    from models.place import Place
+                    model = Place(**obj_dict)
+                    self.new(model)
+                elif class_name == "Review":
+                    from models.review import Review
+                    model = Review(**obj_dict)
+                    self.new(model)
+                elif class_name == "State":
+                    from models.state import State
+                    model = State(**obj_dict)
+                    self.new(model)
