@@ -41,3 +41,7 @@ class FileStorage:
                     from models.base_model import BaseModel
                     model = BaseModel(**obj_dict)
                     self.new(model)
+                elif class_name == "User":
+                    from models.user import User
+                    model = User(**obj_dict)
+                    self.new(model)

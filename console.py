@@ -2,6 +2,7 @@
 """Contains entry point of the command interpreter"""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import re
 
@@ -9,7 +10,7 @@ import re
 class HBNBCommand(cmd.Cmd):
     """Command interpreter"""
     prompt = '(hbnb) '
-    classes = {'BaseModel': BaseModel}
+    classes = {'BaseModel': BaseModel, 'User': User}
 
     def do_create(self, args):
         """Creates a new instance"""
