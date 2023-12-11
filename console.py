@@ -30,6 +30,14 @@ class HBNBCommand(cmd.Cmd):
         elif '.destroy(' in line:
             id = line.split('.')[1][8:-1]
             return 'destroy ' + line.split('.')[0] + " " + id
+        elif '.update(' in line:
+            class_name, second_args = line.split('.', 1)
+            first, attr_name, value = second_args.split(', ', 2)
+            id = first[7:]
+            value = value[:-1]
+            attr_name = attr_name.strip("\"")
+            return f"update {class_name} {id} {attr_name} {value}"
+
         return line
 
     def do_create(self, args):
