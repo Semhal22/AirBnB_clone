@@ -22,6 +22,8 @@ class HBNBCommand(cmd.Cmd):
         """Called before any do_ methods"""
         if '.all()' in line:
             return 'all ' + line.split('.')[0]
+        elif '.count()' in line:
+            return 'count ' + line.split('.')[0]
         return line
 
     def do_create(self, args):
@@ -88,22 +90,21 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """Prints the string representation of all instances"""
         all = []
-        retrieved_instances = storage.all()
         if arg:
             class_name = arg.split(" ")[0]
             if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
             else:
-                for key, obj in retrieved_instances.items():
-                    name, id = key.split('.')
-                    if class_name == name:
-                        all.append(str(obj))
+                ClassName = HBNBCommand.classes[class_name]
+                retrieved_instances = storage.all(ClassName)
+                for obj in retrieved_instances.values():
+                    all.append(str(obj))
 
                 if all:
                     print(all)
                 return
-
+        retrieved_instances = storage.all()
         for value in retrieved_instances.values():
             all.append(str(value))
         if all:
@@ -147,6 +148,17 @@ class HBNBCommand(cmd.Cmd):
                 pass
         setattr(instance, attr_name, attribute)
         instance.save()
+
+    def do_count(self, arg):
+        """Count the number of instances of a Class"""
+        count = 0
+        if arg:
+            class_name = arg.split(" ")[0]
+            if class_name in HBNBCommand.classes:
+                ClassName = HBNBCommand.classes[class_name]
+                retrieved_instances = storage.all(ClassName)
+                count = len(retrieved_instances)
+                print(count)
 
     def emptyline(self):
         """Don't execute anything with empty line + ENTER"""
