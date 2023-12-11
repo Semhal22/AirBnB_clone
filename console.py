@@ -18,6 +18,14 @@ class HBNBCommand(cmd.Cmd):
     classes = {'BaseModel': BaseModel, 'User': User, 'Amenity': Amenity,
                'City': City, 'Place': Place, 'Review': Review, 'State': State}
 
+    def onecmd(self, line):
+        """Execute multiple commands separated by a semicolon."""
+        commands = line.split(';')
+        for command in commands:
+            if command:
+                cmd.Cmd.onecmd(self, command.strip())
+        return False
+
     def precmd(self, line):
         """Called before any do_ methods"""
         if '.all()' in line:
@@ -32,11 +40,21 @@ class HBNBCommand(cmd.Cmd):
             return 'destroy ' + line.split('.')[0] + " " + id
         elif '.update(' in line:
             class_name, second_args = line.split('.', 1)
-            first, attr_name, value = second_args.split(', ', 2)
+            first, value = second_args.split(', ', 1)
             id = first[7:]
-            value = value[:-1]
-            attr_name = attr_name.strip("\"")
-            return f"update {class_name} {id} {attr_name} {value}"
+            dictionary = eval(value[:-1])
+            if isinstance(dictionary, dict):
+                commands = []
+                for key, value in dictionary.items():
+                    key = key.strip("\"")
+                    commands.append(f"update {class_name} {id} {key} {value}")
+
+                return ";".join(commands)
+            else:
+                first, attr_name, value = second_args.split(', ', 2)
+                value = value[:-1]
+                attr_name = attr_name.strip("\"")
+                return f"update {class_name} {id} {attr_name} {value}"
 
         return line
 
@@ -180,12 +198,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """Quit command to exit the program"""
-        return True
+        exit()
 
     def do_EOF(self, line):
         """Exit the cmd"""
         print()
-        return True
+        exit()
 
 
 if __name__ == '__main__':
