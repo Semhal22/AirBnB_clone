@@ -24,6 +24,9 @@ class HBNBCommand(cmd.Cmd):
             return 'all ' + line.split('.')[0]
         elif '.count()' in line:
             return 'count ' + line.split('.')[0]
+        elif '.show(' in line:
+            id = line.split('.')[1][5:-1]
+            return 'show ' + line.split('.')[0] + " " + id
         return line
 
     def do_create(self, args):
