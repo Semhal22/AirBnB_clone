@@ -27,6 +27,9 @@ class HBNBCommand(cmd.Cmd):
         elif '.show(' in line:
             id = line.split('.')[1][5:-1]
             return 'show ' + line.split('.')[0] + " " + id
+        elif '.destroy(' in line:
+            id = line.split('.')[1][8:-1]
+            return 'destroy ' + line.split('.')[0] + " " + id
         return line
 
     def do_create(self, args):
